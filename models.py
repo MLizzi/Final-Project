@@ -50,7 +50,7 @@ def fine_tune_model(model, train_dataloader, exper_dir, num_epochs=20):
     for epoch in range(num_epochs):
         model.train()
         loss_list = []
-        for x_train, y_train in train_dataloader:
+        for x_train, y_train, metadata in train_dataloader:
             optim.zero_grad()
 
             y_hat = model(x_train)
@@ -63,6 +63,7 @@ def fine_tune_model(model, train_dataloader, exper_dir, num_epochs=20):
             loss.backward()
 
             optim.step()
+            print(loss.item())
 
         print("Epoch {}. Training Loss: {}".format(epoch, np.mean(loss_list)))
 

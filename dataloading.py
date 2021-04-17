@@ -34,7 +34,7 @@ def collect_groups(train_dataset, groups, labels):
     # More details can be found here: https://pytorch.org/vision/stable/models.html
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                  std=[0.229, 0.224, 0.225])
-    composed = transforms.Compose([normalize, transforms.Resize((448,448)), transforms.ToTensor()])
+    composed = transforms.Compose([transforms.Resize((448,448)), transforms.ToTensor(), normalize])
 
     return WILDSSubset(train_dataset, both_idx, composed)
 
@@ -78,6 +78,5 @@ def collect_location_label_pairs(train_dataset, pairs):
     # More details can be found here: https://pytorch.org/vision/stable/models.html
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                  std=[0.229, 0.224, 0.225])
-    composed = transforms.Compose([normalize, transforms.Resize((448,448)), transforms.ToTensor()])
-
+    composed = transforms.Compose([transforms.Resize((448,448)), transforms.ToTensor(), normalize])
     return WILDSSubset(train_dataset, final_idx, composed)

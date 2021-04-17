@@ -1,4 +1,5 @@
 import dataloading
+import models
 
 from wilds import get_dataset
 from wilds.common.data_loaders import get_train_loader
@@ -9,7 +10,13 @@ if __name__ == '__main__':
     dataset = get_dataset(dataset='iwildcam', download=True)
     train_data = dataset.get_subset('train')
     # partition_set = dataloading.collect_groups(train_data, [11,12,13], [idx for idx in range(100)])
-    partition_set = dataloading.collect_location_label_pairs(train_data, [(2, idx) for idx in range(1000)])
+    partition_set = dataloading.collect_location_label_pairs(train_data, [(idx, idx) for idx in range(5)])
+    partition_loader = get_train_loader('standard', partition_set, batch_size=16)
+
+    model = models.load_modified_pre_trained('resnet18', 5)
+
+    models.fine_tune_model(model, partition_loader, "./test_model", num_epochs=10)
+
     print(partition_set.metadata_array.shape)
     print(train_data.metadata_array.shape)
     #train_data = dataset.get_subset('train', transform=transforms.Compose([transforms.Resize((448,448)), transforms.ToTensor()]))
