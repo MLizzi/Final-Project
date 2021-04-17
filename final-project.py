@@ -10,6 +10,7 @@ if __name__ == '__main__':
 
     grouper = CombinatorialGrouper(dataset, ['location'])
 
+"""
 # To allow algorithms to leverage domain annotations as well as other groupings over the available metadata, the WILDS
 # package provides Grouper objects. These Grouper objects extract group annotations from metadata, allowing users to
 # specify the grouping scheme in a flexible fashion.
@@ -37,3 +38,4 @@ if __name__ == '__main__':
 
 # Example:
 # https://github.com/p-lambda/wilds/blob/b38304bb6ac3b3f9326cf028d77be9f0cb7c8cdb/examples/algorithms/initializer.py
+"""
