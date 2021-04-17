@@ -19,6 +19,8 @@ if __name__ == '__main__':
 
     print(partition_set.metadata_array.shape)
     print(train_data.metadata_array.shape)
+
+    # Set up the testing data.
     #train_data = dataset.get_subset('train', transform=transforms.Compose([transforms.Resize((448,448)), transforms.ToTensor()]))
     #train_loader = get_train_loader('standard', train_data, batch_size=16)
 
