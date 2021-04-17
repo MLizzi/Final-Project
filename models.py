@@ -66,4 +66,7 @@ def fine_tune_model(model, train_dataloader, exper_dir, num_epochs=20):
 
         print("Epoch {}. Training Loss: {}".format(epoch, np.mean(loss_list)))
 
+    # Save the trained model to the specified directory.
+    torch.save(model.state_dict(), exper_dir)
+
     return model
