@@ -8,8 +8,10 @@ from wilds.common.grouper import CombinatorialGrouper
 if __name__ == '__main__':
     dataset = get_dataset(dataset='iwildcam', download=True)
     train_data = dataset.get_subset('train')
-    partition_set = dataloading.collect_groups(train_data, [11,12,13], [idx for idx in range(100)])
+    # partition_set = dataloading.collect_groups(train_data, [11,12,13], [idx for idx in range(100)])
+    partition_set = dataloading.collect_location_label_pairs(train_data, [(2, idx) for idx in range(1000)])
     print(partition_set.metadata_array.shape)
+    print(train_data.metadata_array.shape)
     #train_data = dataset.get_subset('train', transform=transforms.Compose([transforms.Resize((448,448)), transforms.ToTensor()]))
     #train_loader = get_train_loader('standard', train_data, batch_size=16)
 
