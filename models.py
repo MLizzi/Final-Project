@@ -53,6 +53,12 @@ def fine_tune_model(model, train_dataloader, exper_dir, num_epochs=20):
         for x_train, y_train, metadata in train_dataloader:
             optim.zero_grad()
 
+            # Place tensors on the correct device and fix labels.
+            y_train[y_train == 1] = 0
+            y_train[y_train == 2] = 1
+            y_train[y_train == 4] = 2
+            y_train[y_train == 146] = 3
+
             y_hat = model(x_train)
             
             loss = loss_func(y_hat, y_train)

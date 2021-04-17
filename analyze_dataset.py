@@ -42,7 +42,60 @@ def create_location_array(train_data, file_path):
     pd.DataFrame(dict_list).to_csv(file_path)
 
 
+def greedy_location_split(file_path, num_samples):
+    """Partition locations for each of the 4 classes.
+
+    Note: Since this method uses a greedy allocation
+        strategy, it is possible that *num_samples* will not
+        be found for each class. In that case, a ValueError is
+        raised.
+
+    Parameters:
+    file_path: str. The path to a .csv file created by `create_location_array`.
+    num_samples: int. The min number of samples that each class should have.
+
+    returns: 4-tuple of lists of ints. The lists of locations
+        for each of the classes.
+
+    """
+    dataframe = pd.read_csv(file_path)
+
+    # Keep track of which locations have been claimed.
+    taken_locations = []
+    location_lists = []
+    for label in ['Boar', 'Rodent', 'Puma', 'Turkey']:
+        # Sort the dataframe using this index.
+        label_array = dataframe.sort_values(by=[label], ascending=False)
+        # print(label_array)
+        # Iterate until we've collected *num_samples*, or until
+        # we've been over every row, whichever comes first.
+        samples_stored = 0
+        label_locations = []
+        for index, row in label_array.iterrows():
+            #print(label_locations)
+            if row['Location'] not in taken_locations:
+                taken_locations.append(row['Location'])
+                label_locations.append(row['Location'])
+                samples_stored += row[label]
+
+            # Check if we have enough samples
+            if samples_stored >= num_samples:
+                break
+        
+        # Raise an error if we didn't get enough samples.
+        if samples_stored < num_samples:
+            raise ValueError('{} did not have enough samples!'.format(label))
+
+        location_lists.append(label_locations)
+
+        print("{}: {} samples".format(label, samples_stored))
+
+    print(location_lists)
+    return location_lists 
+
+
 if __name__ == "__main__":
     dataset = get_dataset(dataset='iwildcam', download=True)
     train_data = dataset.get_subset('train')
-    create_location_array(train_data, "./location_counts.csv")
+    #create_location_array(train_data, "./location_counts.csv")
+    greedy_location_split("./location_counts.csv", 2000)
