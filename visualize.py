@@ -16,7 +16,7 @@ model = models.load_modified_pre_trained('resnet18', 4)
 
 # parameters to adjust for different results to be generated
 imagePath = r'D:\Documents\4th Year\CSC413\Final-Project'
-model_filename = 'resnet18_20e_overlap_model'
+model_filename = 'resnet18_20e_model'
 imageName = 'boar.jpg' # swap around based on image wanted
 
 # Load the weights
