@@ -48,7 +48,7 @@ if __name__ == "__main__":
     model = model.to(device)
 
     # Load the weights
-    # model.load_state_dict(torch.load(args.input_model_path))
+    model.load_state_dict(torch.load(args.input_model_path))
 
     # Evaluate the model
     model.eval()
