@@ -1,4 +1,4 @@
-import os
+import argparse
 
 import analyze_dataset
 import dataloading
@@ -34,6 +34,22 @@ def adjust_ys(dataset, num_unique):
 
 if __name__ == '__main__':
 
+    # Parse the arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_model_type",
+                        help="The type of model.")
+    parser.add_argument("output_model_path",
+                        help="Where to save the model.")
+    # Optional arguments
+    parser.add_argument("-b",
+                        default=80,
+                        help="Batch size.")
+    # Optional arguments
+    parser.add_argument("-e",
+                        default=10,
+                        help="Num epochs.")
+    args = parser.parse_args()
+
     # Some torch set up
     torch.manual_seed(1234)
     # Default device + GPU random seed setting
@@ -48,8 +64,8 @@ if __name__ == '__main__':
     train_data = dataset.get_subset('train')
 
     # Partition the locations so that no two labels share a location.
-    analyze_dataset.create_location_array(train_data, "./location_counts.csv")
-    location_lists = analyze_dataset.greedy_location_split("./location_counts.csv", 2000)
+    analyze_dataset.create_location_array(train_data, "./data/location_counts.csv")
+    location_lists = analyze_dataset.greedy_location_split("./data/location_counts.csv", 2000)
 
     # Create a list of pairs of labels and locations.
     label_ids = [1, 2, 4, 146]
@@ -68,18 +84,18 @@ if __name__ == '__main__':
     # TODO: Adjust the labels so that they're in the 0 - 3 range?
     # adjust_ys(partition_set, 5)
 
-    partition_loader = get_train_loader('standard', partition_set, batch_size=80)
+    partition_loader = get_train_loader('standard', partition_set, batch_size=int(args.b))
     eval_loader = get_eval_loader('standard', partition_test_set, batch_size=16)
         
     # partition_set = dataloading.collect_location_label_pairs(train_data, [(idx, idx) for idx in range(5)])
     # partition_loader = get_train_loader('standard', partition_set, batch_size=16)
 
-    model = models.load_modified_pre_trained('resnet18', 4)
+    model = models.load_modified_pre_trained(args.input_model_type, 4)
 
     # Place model on device
     model = model.to(device)
 
-    models.fine_tune_model(model, partition_loader, eval_loader, "./tested_model", device, num_epochs=10)
+    models.fine_tune_model(model, partition_loader, eval_loader, args.output_model_path, device, num_epochs=int(args.e))
 
     print(partition_set.metadata_array.shape)
     print(train_data.metadata_array.shape)

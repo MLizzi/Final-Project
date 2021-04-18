@@ -114,11 +114,10 @@ def fine_tune_model(model, train_dataloader, eval_dataloader, exper_dir, device,
         all_true_labels = torch.cat(true_labels)
 
         test_accuracy = accuracy_score(all_true_labels, all_preds)
-
+        """
         print("Epoch {}. Training Loss: {}, Training Accuracy: {}".format(
             epoch, np.mean(loss_list), np.mean(accuracy_list)))
-        print("Test Accuracy: {}".format(test_accuracy))
-        """
+        # print("Test Accuracy: {}".format(test_accuracy))
 
     # Save the trained model to the specified directory.
     torch.save(model.state_dict(), exper_dir)
