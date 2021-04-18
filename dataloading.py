@@ -3,9 +3,8 @@
 import numpy as np
 from wilds.datasets.wilds_dataset import WILDSSubset
 from wilds import get_dataset
-from wilds.common.data_loaders import get_train_loader
+#from wilds.common.data_loaders import get_train_loader
 import torchvision.transforms as transforms
-from wilds.common.grouper import CombinatorialGrouper
 
 def collect_groups(train_dataset, groups, labels):
     """Create a subset of the data only including these groups and labels.
@@ -102,12 +101,16 @@ def collect_location_label_pairs(dataset, pairs, split):
     # to keep track of which indices should be included in our dataset.
     final_map = None 
     for label, location in pairs:
-        # Determine which indices satisfy both of our criteria, and then create
-        # a map for both using the AND operator.
-        location_map = dataset.metadata_array[:,0] == location
-        label_map = dataset.y_array == label
+        if location == 'all':
+            # For the special "all" option, just take all samples with the label.
+            both_map = dataset.y_array == label
+        else:
+            # Determine which indices satisfy both of our criteria, and then create
+            # a map for both using the AND operator.
+            location_map = dataset.metadata_array[:,0] == location
+            label_map = dataset.y_array == label
 
-        both_map = np.logical_and(location_map, label_map)
+            both_map = np.logical_and(location_map, label_map)
 
         if final_map is None:
             final_map = both_map

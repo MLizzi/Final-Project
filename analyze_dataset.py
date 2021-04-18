@@ -3,9 +3,7 @@ import pandas as pd
 import torch
 
 from wilds import get_dataset
-from wilds.common.data_loaders import get_train_loader
-import torchvision.transforms as transforms
-from wilds.common.grouper import CombinatorialGrouper
+
 
 def create_location_array(train_data, file_path):
     """ Create a csv file detailing the amount of samples at each location.
@@ -81,7 +79,7 @@ def greedy_location_split(file_path, num_samples):
             # Check if we have enough samples
             if samples_stored >= num_samples:
                 break
-        
+
         # Raise an error if we didn't get enough samples.
         if samples_stored < num_samples:
             raise ValueError('{} did not have enough samples!'.format(label))
@@ -91,7 +89,7 @@ def greedy_location_split(file_path, num_samples):
         print("{}: {} samples".format(label, samples_stored))
 
     print(location_lists)
-    return location_lists 
+    return location_lists
 
 
 if __name__ == "__main__":

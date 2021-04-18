@@ -1,3 +1,6 @@
 *__pycache__
 data/*
 models/*
+test_job_*
+location_counts.csv
+train_job
