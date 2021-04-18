@@ -14,8 +14,12 @@ model = models.load_modified_pre_trained('resnet18', 4)
 # Place model on device
 # model = model.to(device)
 
+# parameters to adjust for different results to be generated
+imagePath = r'D:\Documents\4th Year\CSC413\Final-Project'
+model_filename = 'resnet18_20e_overlap_model'
+imageName = 'boar.jpg' # swap around based on image wanted
+
 # Load the weights
-model_filename = 'tested_model_20'
 model.load_state_dict(torch.load(model_filename, map_location=torch.device('cpu')))
 
 # model = resnet50(pretrained=True) # TO SWAP OUT WITH OUR MODEL
@@ -24,8 +28,7 @@ target_layer2 = model.layer2[-1] # TO ADJUST IF OUR MODEL HAS MORE LAYERS (I.E. 
 target_layer3 = model.layer3[-1] # TO ADJUST IF OUR MODEL HAS MORE LAYERS (I.E. OUTPUT LAYER NUMBER IS DIFFERENT)
 target_layer4 = model.layer4[-1] # TO ADJUST IF OUR MODEL HAS MORE LAYERS (I.E. OUTPUT LAYER NUMBER IS DIFFERENT)
 target_layers = [target_layer1, target_layer2, target_layer3, target_layer4]
-imagePath = r'D:\Documents\4th Year\CSC413\Final-Project'
-imageName = 'boar.jpg' # swap around based on image wanted
+
 
 print(os.path.join(imagePath, imageName))
 rgb_img = cv2.imread(os.path.join(imagePath, imageName), 1)[:, :, ::-1]
