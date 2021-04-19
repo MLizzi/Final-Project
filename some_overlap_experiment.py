@@ -1,4 +1,6 @@
 import argparse
+import random
+import numpy as np
 
 import analyze_dataset
 import dataloading
@@ -8,6 +10,13 @@ import torch
 from wilds import get_dataset
 from wilds.common.data_loaders import get_train_loader, get_eval_loader
 import torchvision.transforms as transforms
+
+
+def seed_worker(worker_id):
+    worker_seed = torch.initial_seed() % 2**32
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
+
 
 
 if __name__ == '__main__':
@@ -29,11 +38,17 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Some torch set up
-    torch.manual_seed(1234)
+    seed = 100#1234
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
     # Default device + GPU random seed setting
     if torch.cuda.is_available():
         device = torch.device("cuda")
-        torch.cuda.manual_seed_all(1234)
+        torch.cuda.manual_seed_all(seed)
+        torch.cuda.manual_seed(seed)
         print(f'Running on GPU: {torch.cuda.get_device_name()}.')
     else:
         device = torch.device("cpu")
@@ -60,7 +75,7 @@ if __name__ == '__main__':
     # TODO: Adjust the labels so that they're in the 0 - 3 range?
     # adjust_ys(partition_set, 5)
 
-    partition_loader = get_train_loader('standard', partition_set, batch_size=int(args.b))
+    partition_loader = get_train_loader('standard', partition_set, batch_size=int(args.b), worker_init_fn=seed_worker)
     eval_loader = get_eval_loader('standard', partition_test_set, batch_size=16)
         
     # partition_set = dataloading.collect_location_label_pairs(train_data, [(idx, idx) for idx in range(5)])

@@ -1,8 +1,10 @@
 *__pycache__
 data/*
 models/*
+new_models/*
 test_job_*
 location_counts.csv
 train_job
 eval_job
 overlap_train_job
+seed_test*
