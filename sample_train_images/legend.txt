@@ -1,0 +1,4 @@
+boar - 0
+rodent - 1
+puma - 2
+turkey - 3
