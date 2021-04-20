@@ -5,6 +5,7 @@ import models
 
 
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
 import torch
 from wilds import get_dataset
 from wilds.common.data_loaders import get_eval_loader
@@ -38,10 +39,11 @@ if __name__ == "__main__":
 
     # Set up test set
     test_pair_list = [(1, 'all'), (2, 'all'), (4, 'all'), (146, 'all')]
-    partition_test_set = dataloading.collect_location_label_pairs(dataset, test_pair_list, 'test')
+    partition_test_set = dataloading.collect_location_label_pairs(dataset, test_pair_list, 'test', 'val')
     eval_dataloader = get_eval_loader('standard', partition_test_set, batch_size=int(args.b))
 
     # Load model.
+    print(args.input_model_path)
     model = models.load_modified_pre_trained(args.input_model_type, 4)
 
     # Place model on device
@@ -76,3 +78,10 @@ if __name__ == "__main__":
     test_accuracy = accuracy_score(all_true_labels, all_preds)
 
     print("Test Accuracy: {}".format(test_accuracy))
+    f1 = f1_score(all_true_labels, all_preds, average=None)
+    print(f1)
+
+    print("Boar {}".format(partition_test_set.metadata_array[partition_test_set.metadata_array[:,-1] == 1].shape))
+    print("Rodent {}".format(partition_test_set.metadata_array[partition_test_set.metadata_array[:,-1] == 2].shape))
+    print("Puma {}".format(partition_test_set.metadata_array[partition_test_set.metadata_array[:,-1] == 4].shape))
+    print("Turkey {}".format(partition_test_set.metadata_array[partition_test_set.metadata_array[:,-1] == 146].shape))

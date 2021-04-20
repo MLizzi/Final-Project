@@ -81,7 +81,7 @@ def train_collect_location_label_pairs(train_dataset, pairs):
     return WILDSSubset(train_dataset, final_idx, composed)
 
 
-def collect_location_label_pairs(dataset, pairs, split):
+def collect_location_label_pairs(dataset, pairs, split, split2 = None):
     """Create a subset of the data so that each *label* sample comes from *location*.
 
     Parameters:
@@ -120,6 +120,10 @@ def collect_location_label_pairs(dataset, pairs, split):
     # Finally, we'll take only the samples that satisfy the criteria
     # and are in the *split* set.
     split_map = dataset.split_array == dataset.split_dict[split]
+    # Add the second split if one is specified.
+    if split2 is not None:
+        split2_map = dataset.split_array == dataset.split_dict[split2]
+        split_map = np.logical_or(split_map, split2_map)
     final_map = np.logical_and(split_map, final_map)
 
     final_idx = np.where(final_map)[0]

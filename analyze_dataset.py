@@ -144,7 +144,7 @@ def find_overlap_locations(file_path, num_samples):
             if turkey_num < num_samples and row['Turkey'] != 0:
                 turkey_list.append(row['Location'])
                 turkey_num += row['Turkey']
-        print("{} {} {} {}".format(boar_num, rodent_num, puma_num, turkey_num))
+        print("{} {} {} {} {}".format(row['Location'], boar_num, rodent_num, puma_num, turkey_num))
 
         if boar_num >= num_samples and rodent_num >= num_samples and \
                 puma_num >= num_samples and turkey_num >= num_samples:

@@ -59,7 +59,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Some torch set up
-    seed = 100#1234
+    seed = 1234#100#1234
     torch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)

@@ -44,6 +44,7 @@ def fine_tune_model(model, train_dataloader, eval_dataloader, exper_dir, device,
     num_epochs: int. The number of epochs to train for.
     """
     # Training criteria and optimizer.
+    print(exper_dir)
     loss_func = torch.nn.CrossEntropyLoss()
     # Weight decay and momentum following the 
     # "Deep Residual Learning for Image Recognition" paper.
@@ -81,6 +82,10 @@ def fine_tune_model(model, train_dataloader, eval_dataloader, exper_dir, device,
             train_preds = torch.argmax(y_hat, dim=1)
             accuracy_list.append(accuracy_score(y_train.cpu(), train_preds.cpu()))
             print(loss.item())
+
+        # Save in-progress models at 10 and 20 epochs
+        if epoch == 9 or epoch == 19:
+            torch.save(model.state_dict(), "{}_epoch_{}".format(exper_dir, epoch))
 
         """ Commented out because of memory issues.
         # Before doing the evaluation, delete all training related variables off
