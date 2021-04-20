@@ -18,7 +18,7 @@ model = models.load_modified_pre_trained('resnet18', 4)
 imagePath = r'D:\Documents\4th Year\CSC413\Final-Project\sample_test_images'
 resultsPath = r'D:\Documents\4th Year\CSC413\Final-Project'
 model_filenames = ['new_resnet18_30e_overlap_model', 'new_resnet18_30e_model']
-imageNames = ['test_rodent.jpg', 'test_puma_1.jpg', 'test_puma_2.jpg', 'test_rodent.jpg', 'test_turkey.jpg']  # swap around based on image wanted
+imageNames = ['test_boar.jpg']#['test_rodent.jpg', 'test_puma_1.jpg', 'test_puma_2.jpg', 'test_rodent.jpg', 'test_turkey.jpg']  # swap around based on image wanted
 
 # Load the weights
 for model_filename in model_filenames:
@@ -42,12 +42,12 @@ for model_filename in model_filenames:
             grayscale_cam = cam(input_tensor=input_tensor, target_category=0)
             visualization = show_cam_on_image(rgb_img, grayscale_cam)
 
-            cv2.imshow('GradCAM ' + imageName.replace('.jpg',''), visualization)
+            # cv2.imshow('GradCAM ' + imageName.replace('.jpg',''), visualization)
+            # cv2.waitKey(500) #Wait 1/2 a second before cycling to next photo
 
             folder = 'GradCAM_{}_{}'.format(imageName.replace('.jpg',''), model_filename)
             if not os.path.exists(folder):
                 os.makedirs(folder)
 
-            # print(os.path.join(imagePath, folder, 'GradCAM++_{}_{}_layer{}.jpg'.format(imageName.replace('.jpg',''),model_filename, i+1)))
             print(cv2.imwrite(os.path.join(resultsPath, folder, 'GradCAM_{}_{}_layer{}.jpg'.format(imageName.replace('.jpg',''),model_filename, i+1)), visualization))
             # cv2.waitKey(250)# cv2.waitKey(0)
