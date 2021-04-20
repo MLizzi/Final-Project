@@ -18,8 +18,9 @@ model = models.load_modified_pre_trained('resnet18', 4)
 imagePath = r'D:\Documents\4th Year\CSC413\Final-Project\sample_test_images'
 resultsPath = r'D:\Documents\4th Year\CSC413\Final-Project'
 model_filenames = ['new_resnet18_30e_overlap_model', 'new_resnet18_30e_model']
-imageNames = ['test_boar.jpg']#['test_rodent.jpg', 'test_puma_1.jpg', 'test_puma_2.jpg', 'test_rodent.jpg', 'test_turkey.jpg']  # swap around based on image wanted
-
+imageNames = ['test_boar.jpg','test_rodent.jpg', 'test_puma_1.jpg', 'test_puma_2.jpg', 'test_rodent.jpg', 'test_turkey.jpg']  # swap around based on image wanted
+imageNames = ['test_turkey.jpg']
+# Boar, rodent, puma, and turkey.
 # Load the weights
 for model_filename in model_filenames:
     model.load_state_dict(torch.load(model_filename, map_location=torch.device('cpu')))
@@ -45,7 +46,7 @@ for model_filename in model_filenames:
             # cv2.imshow('GradCAM ' + imageName.replace('.jpg',''), visualization)
             # cv2.waitKey(500) #Wait 1/2 a second before cycling to next photo
 
-            folder = 'GradCAM++_{}_{}'.format(imageName.replace('.jpg',''), model_filename)
+            folder = 'GradCAM++_{}_{}_attempt_boar'.format(imageName.replace('.jpg',''), model_filename)
             if not os.path.exists(folder):
                 os.makedirs(folder)
 
