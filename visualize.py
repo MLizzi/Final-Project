@@ -38,16 +38,16 @@ for model_filename in model_filenames:
 
         #Can be GradCAM, ScoreCAM, GradCAMPlusPlus, AblationCAM, XGradCAM
         for i, layer in enumerate(target_layers):
-            cam = GradCAM(model=model, target_layer=layer, use_cuda=False)
+            cam = GradCAMPlusPlus(model=model, target_layer=layer, use_cuda=False)
             grayscale_cam = cam(input_tensor=input_tensor, target_category=0)
             visualization = show_cam_on_image(rgb_img, grayscale_cam)
 
             # cv2.imshow('GradCAM ' + imageName.replace('.jpg',''), visualization)
             # cv2.waitKey(500) #Wait 1/2 a second before cycling to next photo
 
-            folder = 'GradCAM_{}_{}'.format(imageName.replace('.jpg',''), model_filename)
+            folder = 'GradCAM++_{}_{}'.format(imageName.replace('.jpg',''), model_filename)
             if not os.path.exists(folder):
                 os.makedirs(folder)
 
-            print(cv2.imwrite(os.path.join(resultsPath, folder, 'GradCAM_{}_{}_layer{}.jpg'.format(imageName.replace('.jpg',''),model_filename, i+1)), visualization))
+            print(cv2.imwrite(os.path.join(resultsPath, folder, 'GradCAM++_{}_{}_layer{}.jpg'.format(imageName.replace('.jpg',''),model_filename, i+1)), visualization))
             # cv2.waitKey(250)# cv2.waitKey(0)
